@@ -57,4 +57,13 @@ public class Process
     {
 
     }
+
+    /**
+     * method used to translate address into VIRTUAL page number, thereby stripping the offset.
+     * will be useful as helper in read and write, but also in the algorithms that need future knowledge of page accesses
+     */
+    public int whichPage(int address)
+    {
+
+    }
 }
