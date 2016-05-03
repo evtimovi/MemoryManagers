@@ -37,8 +37,11 @@ public abstract class MemoryManager
      * this method will perform the following:
      * 1. check  the validity of the frame (is it in main memory?); if not, invoke page replacement handler (private method below)
      * 2. update statistics
+     *
+     * IMPORTANT: the actual frame needs to be passed in by the process - 
+     * if this is a new frame, this parameter is going to be what is actually put into the PhysicalMemory table
      */
-    public void reference(int frameNumber)
+    public void reference(Frame incomingFrame)
     {
 
     }
