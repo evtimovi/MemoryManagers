@@ -48,8 +48,18 @@ public abstract class MemoryManager
      * this will be algorithm-specific, so it is left to the inheriting classes.
      * Note: it might be useful to wrap the data structure updates in another method 
      * that is implemented here in the parent because that will be common across most algorithms
+     *
+     * In general, we expect this handler to do the following:
+     * 1. use a page replacement algorithm to decide what frame gets kicked out or,
+     * if that is not necessary, what is the free frame we are putting the page in
+     * 2. update the soon-to-be-kicked-out Frame object to set its number to -1, clear its dirty bit and do other algo-specific resets
+     * 3. update the frame that is coming in to set its number to the frame it will be allocated in memory
+     * 4. make the appropriate call to the PhysicalMemory object to do the actual replacement
+     * DO NOT dereference from the Process page table, actually do not even care about the process page table
+     *
+     * @param incomingFrame the frame that will be brought in from the backing store
      */
-    private abstract void replacementHandler()
+    private abstract void replacementHandler(Frame incomingFrame)
     {
 
     }
