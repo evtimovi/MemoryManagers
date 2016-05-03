@@ -38,11 +38,6 @@ public class Controller
     private ArrayList<String> procArr;
 
     /**
-     * keeps track of the timesteps
-     */
-    private int clock;
-
-    /**
      * the following method will read the input file and fill up the futureAccessStrings array
      * TO-DO: appropriate parameters as filled up from the arguments supplied by the user
      * @throws IOException upon problems with the scanner, should be handled in main
@@ -54,6 +49,10 @@ public class Controller
 
     /**
      * next memory access - to be called until the futureAccessStrings array is empty (no more memory references)
+     * 1. get the next thing from the futureAccessStrings array (or queue or whatever it is)
+     * 2. look for a process with that PID; if not found - create and initialize a new process with "default" page table 
+     * - frames that are invalid (e.g. not loaded into memory)
+     * 3. proceed to call read or write on that process 
      */
     public void next()
     {
@@ -64,9 +63,8 @@ public class Controller
      * performs set up based on the input parameters:
      * 0. calculate number of bits for page number and for offset and set appropriate global variables,
      *    calculate how many frames and how many pages we have, update global variables and pass to MemoryManager
-     * 1. initialize MemoryManager and memory abstractiob objects (such as PhysicalMemory, backing store, etc)
-     * 2. initialize Processes (may need to count number of different processes in the future access strings; 
-     *    in addition, each process's page table needs to be filled up WITH FRAME OBJECTS THAT ARE HELD IN THE BACKINGSTORE ABSTRACTION)
+     * 1. initialize MemoryManager and memory abstraction objects (such as PhysicalMemory)
+     * initialization and setup of Process objects will NOT happen here, but on the fly - see "next"
      * @param sizeOfPage will correspond to user argument and will be used for the calculations in step 0
      */
     private void setup(int sizeOfPage)
