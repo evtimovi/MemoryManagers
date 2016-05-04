@@ -61,6 +61,12 @@ public class Controller
      */
     private static HashMap<Integer, Process> procMap;
 
+    /** accessor for the memory manager */
+    public static MemoryManager getMemoryManager()
+    {
+        return mm;
+    }
+
     /**
      * the following method will read the input file and fill up the futureAccessStrings array
      * TO-DO: appropriate parameters as filled up from the arguments supplied by the user

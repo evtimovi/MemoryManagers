@@ -62,7 +62,10 @@ public class Process
      */
     public void read(int address)
     {
-    
+        int pageNum = whichPage(address);
+        Frame fr = pageTable.get(pageNum);
+        MemoryManager mm = Controller.getMemoryManager();
+        mm.reference(fr);
     }
     
 
@@ -74,7 +77,11 @@ public class Process
      */
     public void write(int address)
     {
-
+        int pageNum = whichPage(address);
+        Frame fr = pageTable.get(pageNum);
+        MemoryManager mm = Controller.getMemoryManager();
+        mm.reference(fr);
+        fr.setDirtyBit();
     }
 
     /**
@@ -83,6 +90,13 @@ public class Process
      */
     public int whichPage(int address)
     {
-		return 23;
+        //convert to bit string
+        String bitAddress = Integer.toBinaryString(address); 
+
+        //get just the front - i.e. the page number
+        String pageNumBinary = bitAddress.substring(0, Controller.PAGE_NUMBER_LENGTH);
+
+        //parse that to a real integer and return it
+        return Integer.parseInt(pageNumBinary, 2);
     }
 }
