@@ -139,7 +139,7 @@ public class Controller
                 mm = new EnhancedSecondChanceMemoryManager();
                 break;
             default:
-                mm = new CustomMemoryManager;
+                mm = new CustomMemoryManager();
         }
 
         procMap = new HashMap<Integer, Process>();
@@ -150,7 +150,7 @@ public class Controller
      */
     private static int logBase2(int x)
     {
-        if(x = 1)
+        if(x == 1)
         {
             return 0;
         }
@@ -162,8 +162,8 @@ public class Controller
 
     public static void main(String[] args)
     {
-        int pid, address;
-        boolean read;
+        int pid = 0, address = 0;
+		boolean read = true;
 
         String algoType = args[0];
         int pageSize = Integer.parseInt(args[1]);
@@ -197,7 +197,7 @@ public class Controller
                 read = sc.next().equals("R");
                 sc.close();
             }
-            catch(IOException e)
+            catch(InputMismatchException e)
             {
                 System.out.println ("IO Exception occured when parsing lines from the input file. Exiting...");
                 System.out.println(e);

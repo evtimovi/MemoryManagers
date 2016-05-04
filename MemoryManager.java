@@ -62,8 +62,5 @@ public abstract class MemoryManager
      *
      * @param incomingFrame the frame that will be brought in from the backing store
      */
-    private abstract void replacementHandler(Frame incomingFrame)
-    {
-
-    }
+    protected abstract void replacementHandler(Frame incomingFrame);
 }
