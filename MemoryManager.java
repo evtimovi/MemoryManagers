@@ -43,7 +43,8 @@ public abstract class MemoryManager
         }
 
         physMem = new PhysicalMemory();
-        numMemAccess = 0;
+        memAccessCount = 0;
+        pageFaultCount = 0;
     }
 
    
@@ -81,7 +82,7 @@ public abstract class MemoryManager
             }
             else
             {
-                victimFrameNum = this.chooseVictim();
+                victimFrameNum = this.chooseVictim().getNumber();
             }
             
             //the replacement handler is left to the children to implement - they might need to 
@@ -103,7 +104,7 @@ public abstract class MemoryManager
      *
      * @param incomingFrame the frame that will be brought in from the backing store
      */
-    protected void replacementHandler(int victimFrameNum, Frame incomingFrame);
+    protected abstract void replacementHandler(int victimFrameNum, Frame incomingFrame);
 
     protected abstract Frame chooseVictim();
 }
