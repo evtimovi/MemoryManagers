@@ -51,17 +51,22 @@ public class PhysicalMemory
                 return i;
             }
         }
-
         return -1;
     }
 
 
     /**
      * method to perform the replacement, dereferences the specified frame and puts in the other one
-     * 
+     * this method doesn't care if the victim position is empty or not 
      */
     public void replaceWith(int victim, Frame incoming)
     {
         pm.set(victim, incoming);
+    }
+
+    /** method to get the frame at the current position (the position-nth frame), doesn't care if it is null or not */
+    public Frame getFrameAt(int position)
+    {
+        return pm.get(position);
     }
 }
