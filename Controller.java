@@ -85,7 +85,7 @@ public class Controller
      * - frames that are invalid (e.g. not loaded into memory)
      * 3. proceed to call read or write on that process 
      */
-    private static void next(int pid, int address, boolean read)
+    private static void next(int pid, int address, boolean read) throws ParametersUninitializedException
     {
         Process proc = procMap.get(new Integer(pid));
 
@@ -196,11 +196,15 @@ public class Controller
 
             try
             {
+                //parse string
                 Scanner sc = new Scanner(ma).useDelimiter(",");
                 pid = sc.nextInt();
                 address = sc.nextInt();
                 read = sc.next().equals("R");
                 sc.close();
+
+                //call next
+                next(pid, address, read);
             }
             catch(InputMismatchException e)
             {
@@ -208,8 +212,12 @@ public class Controller
                 System.out.println(e);
                 System.exit(1);
             }
+            catch (ParametersUninitializedException e1)
+            {
+                System.out.println("The parameters were not initialized properly.");
+                System.exit(1);
+            }
 
-            next(pid, address, read);
         }
     }
 }

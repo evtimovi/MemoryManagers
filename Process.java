@@ -39,7 +39,7 @@ public class Process
             throw new ParametersUninitializedException("");
         }
 
-        pageTable = new ArrayList<Frame>(NUM_OF_PAGES);
+        pageTable = new ArrayList<Frame>(Controller.NUM_OF_PAGES);
 
         for (Frame f : pageTable)
         {
