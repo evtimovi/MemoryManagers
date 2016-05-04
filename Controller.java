@@ -1,4 +1,5 @@
 /**
+ * main entry point for the project.
  * CS 406 Operating Systems
  * Spring 2016, Lafayette College
  * Professor Amir Sadovnik
@@ -20,31 +21,53 @@ import java.io.*;
 public class Controller
 {
 
+    //known constants - e.g. lenght of the virtual address (in bits)
+    public static final int VIRTUAL_ADDRESS_LENGTH = 16;
+    public static final int PHYSICAL_ADDRESS_LENGTH = 11;
+    public static final int NUM_PHYSICAL_ADDRESSES = 2048;
+    public static final int NUM_VIRTUAL_ADDRESSES = 65536;
+
+    //constants to be determined by user input - how many bits of each address are dedicated to these
+    public static int OFFSET_LENGTH;
+    public static int PAGE_NUMBER_LENGTH;
+    public static int FRAME_NUMBER_LENGTH;
+
+    //non-bit constants, e.g. size of page = number of bytes in a page
+    public static int PAGE_SIZE;
+    public static int NUM_OF_PAGES;
+
     /**
      * all the input file will be scanned in first and stored in this object, 
      * broken up for string accesses
      */
-    private ArrayList<String> futureAccessStrings;
+    private static ArrayList<String> future;
 
     /**
      * the memory manager - this will be initialized to different subclasses depending on the requested algo
      * The memory manager also needs to keep track of the statistics and the output that will be shown to the user.
      */
-    private MemoryManager mm;
+    private static MemoryManager mm;
 
     /**
      * holds all processes in the system, will be initialized during setup time
      */
-    private ArrayList<String> procArr;
+    private static ArrayList<String> procArr;
 
     /**
      * the following method will read the input file and fill up the futureAccessStrings array
      * TO-DO: appropriate parameters as filled up from the arguments supplied by the user
+     * @param file the fileName of the file to be read
      * @throws IOException upon problems with the scanner, should be handled in main
      */
-    public void readInputFile() throws IOException
+    public static void readFile(String file) throws IOException
     {
-
+        future = new ArrayList<String>();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader (file) );
+        while (bufferedReader.ready())
+        {
+            future.add(bufferedReader.readLine());
+        }
+        bufferedReader.close();
     }
 
     /**
@@ -54,8 +77,10 @@ public class Controller
      * - frames that are invalid (e.g. not loaded into memory)
      * 3. proceed to call read or write on that process 
      */
-    public void next()
+    public static void next(int pid, int address, boolean read)
     {
+
+        
 
     }
 
@@ -73,5 +98,68 @@ public class Controller
     }
     public static void main(String[] args)
     {
+        String file = args[2];
+        String algoType = args[0];
+        int pageSize = Integer.parseInt(args[1]);
+
+        int pid, address;
+        boolean read;
+
+        try
+        {
+            readFile(file);
+        }
+        catch (IOException e)
+        {
+            System.out.println ("IO Exception occured when reading the input file. Exiting...");
+            System.out.println(e);
+            System.exit(1);
+        }
+
+        switch(algoType)
+        {
+            case "optimal":
+                mm = new OptimalMemoryManager();
+                break;
+            case "fifo":
+                mm = new FIFOMemoryManager();
+                break;
+            case "lru":
+                mm = new LRUMemoryManager();
+                break;
+            case "secondChance":
+                mm = new SecondChanceMemoryManager();
+                break;
+            case "enhancedSecondChance":
+                mm = new EnhancedSecondChanceMemoryManager();
+                break;
+            default:
+                mm = new CustomMemoryManager;
+
+        }
+
+        setup(pageSize);
+
+        for (int i = 0; i < future.size(); i++)
+        {
+            String ma = future.get(i);
+
+            try
+            {
+                Scanner sc = new Scanner(ma).useDelimiter(",");
+                pid = sc.nextInt();
+                address = sc.nextInt();
+                read = sc.next().equals("R");
+                sc.close();
+            }
+            catch(IOException e)
+            {
+                System.out.println ("IO Exception occured when parsing lines from the input file. Exiting...");
+                System.out.println(e);
+                System.exit(1);
+            }
+
+            next(pid, address, read);
+        }
     }
 }
