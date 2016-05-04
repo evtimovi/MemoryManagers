@@ -19,8 +19,8 @@ import java.util.*;
 
 public class LRUMemoryManager extends MemoryManager
 {
-    protected void replacementHandler(Frame incomingFrame)
-    {
+    protected void replacementHandler(int victimFrameNum, Frame incomingFrame) {}
 
-    }
+    protected  Frame chooseVictim() {return null;}
+
 }
