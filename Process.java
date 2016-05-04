@@ -28,9 +28,13 @@ public class Process
      */
     private ArrayList<Frame> pageTable;
 
+    /** this process' unique identifier*/
+    private int pid; 
+
     /**
-     * constructs an empty process based on the Controller parameters.
+     * default constructs an empty process based on the Controller parameters.
      * note that for this constructor to execute properly, these parameters need to have intialized by a call to setup in the Controller
+     * NO PID ASSIGNED!!!!
      */
     public Process() throws ParametersUninitializedException
     {
@@ -44,6 +48,24 @@ public class Process
         for (Frame f : pageTable)
         {
             f = new Frame();
+        }
+    }
+
+    /** same as default, but pid is assigned as provided, use this not the default */
+    public Process(int id) throws ParametersUninitializedException
+    {
+        if(! Controller.PARAM_INIT)
+        {
+            throw new ParametersUninitializedException("");
+        }
+
+        pid = id;
+
+        pageTable = new ArrayList<Frame>(Controller.NUM_OF_PAGES);
+        
+        for (Frame f : pageTable)
+        {
+            f = new Frame(pid);
         }
     }
 
@@ -99,4 +121,8 @@ public class Process
         //parse that to a real integer and return it
         return Integer.parseInt(pageNumBinary, 2);
     }
+
+    /** accessors for the PID */
+    public int getPid(){return pid;}
+    public int getPID(){return pid;}
 }

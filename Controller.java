@@ -97,7 +97,7 @@ public class Controller
 
         if(proc == null)
         {
-            proc = new Process();
+            proc = new Process(pid);
             procMap.put(new Integer(pid), proc);
         }
 

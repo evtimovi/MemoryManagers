@@ -25,6 +25,11 @@ public class Frame
     private int number;
 
     /**
+     * the owning process' pid
+     */
+    private int pid;
+
+    /**
      * exactly what one would expect - keeps track of whether something has been written to this page
      */
     private boolean dirty;
@@ -34,6 +39,16 @@ public class Frame
     {
         this.number = -1;
         this.dirty = false;
+    }
+
+    /**
+     * same as default but allows to set the owner of the frame (the process' pid)
+     */
+    public Frame(int owner)
+    {
+        this.number = -1;
+        this.dirty = false;
+        this.pid = owner;
     }
 
     /**
@@ -59,4 +74,9 @@ public class Frame
     {
         this.number = num;
     }
+
+    /** 3 different access methods based on different spelling conventions */
+    public int getPid(){ return pid; }
+    public int getPID(){ return pid; }
+    public int getOwner(){ return pid; }
 }
