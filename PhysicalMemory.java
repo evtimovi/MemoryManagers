@@ -14,17 +14,29 @@
  *
  */
 
+import java.util.*;
+
 public class PhysicalMemory
 {
    /**
-    * TO-DO: some sort of data structure to hold the frame object
     * this data structure needs to be initialized to size of the maximum possible number of frames in the system
     * (needs to reference the global parameters specified by the user)
     */
+    private ArrayList<Frame> pm;
 
     /**
      * also consider: abstractions about free space, etc
      */
+
+    public PhysicalMemory() throws ParametersUninitializedException
+    {
+        if( ! Controller.PARAM_INIT )
+        {
+            throw new ParametersUninitializedException("");
+        }
+
+        pm = new ArrayList<Frame>(Controller.NUM_OF_FRAMES);
+    }
 
     /**
      * just returns a frame number that is free and can be written to - designed to be called from a MemoryManager object
@@ -32,6 +44,14 @@ public class PhysicalMemory
      */
     public int getFreeFrame()
     {
+        for(int i = 0; i < pm.size(); i++)
+        {
+            if(pm.get(i) == null)
+            {
+                return i;
+            }
+        }
+
         return -1;
     }
 
@@ -42,6 +62,6 @@ public class PhysicalMemory
      */
     public void replaceWith(int victim, Frame incoming)
     {
-
+        pm.set(victim, incoming);
     }
 }
