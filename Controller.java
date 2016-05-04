@@ -27,6 +27,10 @@ public class Controller
     public static final int NUM_PHYSICAL_ADDRESSES = 2048;
     public static final int NUM_VIRTUAL_ADDRESSES = 65536;
 
+    /** 
+     * all of these should only be set up in the setup method here, 
+     * access is simplified by making them public, but they should not be modified.
+     */
     //constants to be determined by user input - how many bits of each address are dedicated to these
     public static int OFFSET_LENGTH;
     public static int PAGE_NUMBER_LENGTH;
@@ -35,6 +39,7 @@ public class Controller
     //non-bit constants, e.g. size of page = number of bytes in a page
     public static int PAGE_SIZE;
     public static int NUM_OF_PAGES;
+    public static int NUM_OF_FRAMES;
 
     /**
      * all the input file will be scanned in first and stored in this object, 
@@ -92,10 +97,32 @@ public class Controller
      * initialization and setup of Process objects will NOT happen here, but on the fly - see "next"
      * @param sizeOfPage will correspond to user argument and will be used for the calculations in step 0
      */
-    private void setup(int sizeOfPage)
+    private static void setup(int sizeOfPage)
     {
-
+        PAGE_SIZE = sizeOfPage;
+        OFFSET_LENGTH = logBase2(PAGE_SIZE);
+        PAGE_NUMBER_LENGTH = VIRTUAL_ADDRESS_LENGTH - OFFSET_LENGTH;
+        FRAME_NUMBER_LENGTH = PHYSICAL_ADDRESS_LENGTH - OFFSET_LENGTH;
+        NUM_OF_PAGES = (int) Math.pow((double) 2, (double) PAGE_NUMBER_LENGTH);
+        NUM_OF_FRAMES = (int) Math.pow((double) 2, (double) FRAME_NUMBER_LENGTH);
+        
     }
+
+    /**
+     * method to return the log base 2 of an item x, with the decimal part cut off (rounded down)
+     */
+    private static int logBase2(int x)
+    {
+        if(x = 1)
+        {
+            return 0;
+        }
+        else
+        {
+            return 1 + logBase2((int) x/2);
+        }
+    }
+
     public static void main(String[] args)
     {
         String file = args[2];
