@@ -97,10 +97,9 @@ public abstract class MemoryManager
      * this will be algorithm-specific, so it is left to the inheriting classes.
      *
      * In general, we expect this handler to do the following:
-     * 1. update the soon-to-be-kicked-out Frame object to set its number to -1, clear its dirty bit and do other algo-specific resets
+     * 1. update the soon-to-be-kicked-out Frame object to set its number to -1, clear its dirty bit and do other algo-specific resets, increment memory write access if the frame is dirty
      * 2. update the frame that is coming in to set its number to the frame it will be allocated in memory
-     * 3. make the appropriate call to the PhysicalMemory object to do the actual replacement
-     * DO NOT dereference from the Process page table, actually do not even care about the process page table
+     * 3. make the appropriate call to the PhysicalMemory object to do the actual replacement. physsmam.repleace with (xy)
      *
      * @param incomingFrame the frame that will be brought in from the backing store
      */

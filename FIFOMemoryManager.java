@@ -19,8 +19,12 @@ import java.util.*;
 
 public class FIFOMemoryManager extends MemoryManager
 {
+	
+	LinkedList<Frame> fifo= new LinkedList<Frame>()
+    protected void replacementHandler(int victimFrameNum, Frame incomingFrame) {
+		fifo.add(incomingFrame); //add to the end of the list
+	}
 
-    protected void replacementHandler(int victimFrameNum, Frame incomingFrame) {}
-
-    protected  Frame chooseVictim() {return null;}
-}
+   protected  Frame chooseVictim() {
+		return fifo.poll();
+	}
