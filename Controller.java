@@ -41,6 +41,9 @@ public class Controller
     public static int NUM_OF_PAGES;
     public static int NUM_OF_FRAMES;
 
+    //just a sanity check boolean to make sure anything that relies on these variables being initialized
+    public static boolean PARAM_INIT = false;
+
     /**
      * all the input file will be scanned in first and stored in this object, 
      * broken up for string accesses
@@ -120,6 +123,8 @@ public class Controller
         FRAME_NUMBER_LENGTH = PHYSICAL_ADDRESS_LENGTH - OFFSET_LENGTH;
         NUM_OF_PAGES = (int) Math.pow((double) 2, (double) PAGE_NUMBER_LENGTH);
         NUM_OF_FRAMES = (int) Math.pow((double) 2, (double) FRAME_NUMBER_LENGTH);
+
+        PARAM_INIT = true;
 
         switch(algoChoice)
         {

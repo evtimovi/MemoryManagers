@@ -29,6 +29,25 @@ public class Process
     private ArrayList<Frame> pageTable;
 
     /**
+     * constructs an empty process based on the Controller parameters.
+     * note that for this constructor to execute properly, these parameters need to have intialized by a call to setup in the Controller
+     */
+    public Process() throws ParametersUninitializedException
+    {
+        if(! Controller.PARAM_INIT)
+        {
+            throw new ParametersUninitializedException("");
+        }
+
+        pageTable = new ArrayList<Frame>(NUM_OF_PAGES);
+
+        for (Frame f : pageTable)
+        {
+            f = new Frame();
+        }
+    }
+
+    /**
      * method to simulate a read.
      * will follow this procedural flow:
      * 1. strip the offset from the virtual address being passed as a parameter 
