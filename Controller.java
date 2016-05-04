@@ -56,7 +56,7 @@ public class Controller
     /**
      * holds all processes in the system, will be initialized during setup time
      */
-    private static ArrayList<String> procArr;
+    private static HashMap<Integer, Process> procMap;
 
     /**
      * the following method will read the input file and fill up the futureAccessStrings array
@@ -77,16 +77,29 @@ public class Controller
 
     /**
      * next memory access - to be called until the futureAccessStrings array is empty (no more memory references)
-     * 1. get the next thing from the futureAccessStrings array (or queue or whatever it is)
+     * 1. get the next thing from the futureAccessStrings array (or queue or whatever it is) - already happened in main
      * 2. look for a process with that PID; if not found - create and initialize a new process with "default" page table 
      * - frames that are invalid (e.g. not loaded into memory)
      * 3. proceed to call read or write on that process 
      */
-    public static void next(int pid, int address, boolean read)
+    private static void next(int pid, int address, boolean read)
     {
+        Process proc = procMap.get(new Integer(pid));
 
-        
+        if(proc == null)
+        {
+            proc = new Process();
+            procMap.put(new Integer(pid), proc);
+        }
 
+        if(read)
+        {
+            proc.read(address);
+        }
+        else
+        {
+            proc.write(address);
+        }
     }
 
     /**
@@ -94,10 +107,12 @@ public class Controller
      * 0. calculate number of bits for page number and for offset and set appropriate global variables,
      *    calculate how many frames and how many pages we have, update global variables and pass to MemoryManager
      * 1. initialize MemoryManager and memory abstraction objects (such as PhysicalMemory)
+     * --- this happens in the constructor of the Memory object
      * initialization and setup of Process objects will NOT happen here, but on the fly - see "next"
      * @param sizeOfPage will correspond to user argument and will be used for the calculations in step 0
+     * @param algoChoice the choice of algorithm for the user
      */
-    private static void setup(int sizeOfPage)
+    private static void setup(int sizeOfPage, String algoChoice)
     {
         PAGE_SIZE = sizeOfPage;
         OFFSET_LENGTH = logBase2(PAGE_SIZE);
@@ -105,7 +120,29 @@ public class Controller
         FRAME_NUMBER_LENGTH = PHYSICAL_ADDRESS_LENGTH - OFFSET_LENGTH;
         NUM_OF_PAGES = (int) Math.pow((double) 2, (double) PAGE_NUMBER_LENGTH);
         NUM_OF_FRAMES = (int) Math.pow((double) 2, (double) FRAME_NUMBER_LENGTH);
-        
+
+        switch(algoChoice)
+        {
+            case "optimal":
+                mm = new OptimalMemoryManager();
+                break;
+            case "fifo":
+                mm = new FIFOMemoryManager();
+                break;
+            case "lru":
+                mm = new LRUMemoryManager();
+                break;
+            case "secondChance":
+                mm = new SecondChanceMemoryManager();
+                break;
+            case "enhancedSecondChance":
+                mm = new EnhancedSecondChanceMemoryManager();
+                break;
+            default:
+                mm = new CustomMemoryManager;
+        }
+
+        procMap = new HashMap<Integer, Process>();
     }
 
     /**
@@ -125,13 +162,14 @@ public class Controller
 
     public static void main(String[] args)
     {
-        String file = args[2];
-        String algoType = args[0];
-        int pageSize = Integer.parseInt(args[1]);
-
         int pid, address;
         boolean read;
 
+        String algoType = args[0];
+        int pageSize = Integer.parseInt(args[1]);
+        String file = args[2];
+
+        //step 1: reading the file
         try
         {
             readFile(file);
@@ -143,30 +181,10 @@ public class Controller
             System.exit(1);
         }
 
-        switch(algoType)
-        {
-            case "optimal":
-                mm = new OptimalMemoryManager();
-                break;
-            case "fifo":
-                mm = new FIFOMemoryManager();
-                break;
-            case "lru":
-                mm = new LRUMemoryManager();
-                break;
-            case "secondChance":
-                mm = new SecondChanceMemoryManager();
-                break;
-            case "enhancedSecondChance":
-                mm = new EnhancedSecondChanceMemoryManager();
-                break;
-            default:
-                mm = new CustomMemoryManager;
+        //step 2: setup - initializing page size, etc
+        setup(pageSize, algoType);
 
-        }
-
-        setup(pageSize);
-
+        //step 3: actual execution loop - parse String and call next
         for (int i = 0; i < future.size(); i++)
         {
             String ma = future.get(i);
