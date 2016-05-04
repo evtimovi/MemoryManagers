@@ -29,8 +29,34 @@ public class Frame
      */
     private boolean dirty;
 
-    /**
-     * TO-DO: abstractions for access and modification
-     */
+    //default constructor with number = -1 and dirty = false
+    public Frame()
+    {
+        this.number = -1;
+        this.dirty = false;
+    }
 
+    /**
+     * set and clear dirty bit, both return the resulting value of the dirty bit
+     */
+    public boolean setDirtyBit(){ dirty = true; return dirty; }
+    public boolean clearDirtyBit(){ dirty = false; return dirty; }
+
+    /**
+     * access the frame's number, -1 indicates it is not loaded in main memory (it is invalid)
+     */
+    public int getNumber(){ return number; }
+    public boolean isValid(){ return number > 0; }
+
+    /** reset the Frame to its default state, e.g. for when we are moving it out of memory */
+    public void clearAll()
+    {
+        number = -1;
+        dirty = false;
+    }
+
+    public void setNumber(int num)
+    {
+        this.number = num;
+    }
 }
