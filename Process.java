@@ -63,9 +63,9 @@ public class Process
 
         pageTable = new ArrayList<Frame>(Controller.NUM_OF_PAGES);
         
-        for (Frame f : pageTable)
+        for (int i = 0; i < Controller.NUM_OF_PAGES; i++)
         {
-            f = new Frame(pid);
+            pageTable.add(new Frame(pid));
         }
     }
 
