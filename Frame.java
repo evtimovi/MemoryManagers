@@ -79,4 +79,5 @@ public class Frame
     public int getPid(){ return pid; }
     public int getPID(){ return pid; }
     public int getOwner(){ return pid; }
+    public boolean isDirty(){ return dirty; }
 }
