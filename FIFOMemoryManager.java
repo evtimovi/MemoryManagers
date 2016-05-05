@@ -19,12 +19,31 @@ import java.util.*;
 
 public class FIFOMemoryManager extends MemoryManager
 {
-	
-	LinkedList<Frame> fifo= new LinkedList<Frame>()
-    protected void replacementHandler(int victimFrameNum, Frame incomingFrame) {
-		fifo.add(incomingFrame); //add to the end of the list
-	}
+    private LinkedList<Frame> fifo;
 
-   protected  Frame chooseVictim() {
-		return fifo.poll();
-	}
+    public FIFOMemoryManager()
+    {
+        super();
+        fifo= new LinkedList<Frame>();
+    }
+
+    protected void replacementHandler(int victimFrameNum, Frame incomingFrame) 
+    {
+        fifo.add(incomingFrame); //add to the end of the list
+
+        Frame victim = physMem.getFrameAt(victimFrameNum);
+        if(victim != null)
+        {
+            victim.clearAll();
+        }
+
+        incomingFrame.setNumber(victimFrameNum);
+
+        physMem.replaceWith(victimFrameNum, incomingFrame);
+    }
+
+    protected Frame chooseVictim() 
+    {
+        return fifo.poll();
+    }
+}
