@@ -99,6 +99,8 @@ public class Process
         {
             printLoadedMsg(pageNum, this.pid, replacedFrame);
         }
+
+        System.out.println("\tVirtual address: " + address + "-> Physical address: " + this.whichPhysicalAddress(address)); 
     }
     
 
@@ -124,6 +126,7 @@ public class Process
         {
             printLoadedMsg(pageNum, this.pid, replacedFrame);
         }
+        System.out.println("\tVirtual address: " + address + "-> Physical address: " + this.whichPhysicalAddress(address));
     }
 
     /**
@@ -139,6 +142,19 @@ public class Process
 
         //get just the front - i.e. the page number
         String pageNumBinary = bitAddress.substring(0, Controller.PAGE_NUMBER_LENGTH);
+
+        //parse that to a real integer and return it
+        return Integer.parseInt(pageNumBinary, 2);
+    }
+
+    public int whichPhysicalAddress(int address)
+    {
+        //convert to bit string and pad with leading 0s to make it 16 bits long
+        String bitAddress = Integer.toBinaryString(address); 
+        bitAddress = padWithZeroes(bitAddress);
+
+        //get just the back - i.e. the offset
+        String pageNumBinary = bitAddress.substring(Controller.PAGE_NUMBER_LENGTH);
 
         //parse that to a real integer and return it
         return Integer.parseInt(pageNumBinary, 2);

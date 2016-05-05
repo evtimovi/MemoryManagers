@@ -61,7 +61,7 @@ public class Frame
      * access the frame's number, -1 indicates it is not loaded in main memory (it is invalid)
      */
     public int getNumber(){ return number; }
-    public boolean isValid(){ return number > 0; }
+    public boolean isValid(){ return number > -1; }
 
     /** reset the Frame to its default state, e.g. for when we are moving it out of memory */
     public void clearAll()

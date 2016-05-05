@@ -82,10 +82,12 @@ public abstract class MemoryManager
             if(freeFrameNum > -1)
             {
                 victimFrameNum = freeFrameNum;           
+                System.out.print("no replacement: ");
             }
             else
             {
                 victimFrameNum = this.chooseVictim().getNumber();
+                System.out.print("replacement: ");
             }
             
             //the replacement handler is left to the children to implement - they might need to 
