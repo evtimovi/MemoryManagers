@@ -72,7 +72,7 @@ public abstract class MemoryManager
         
         int victimFrameNum = -1;
 
-        // if it is valid, we are done, no disc access
+        // if it is valid, we are done, no disk access
         if(!incomingFrame.isValid())
         {
             pageFaultCount++;//statistics-keeping
@@ -88,7 +88,10 @@ public abstract class MemoryManager
             {
                 victimFrameNum = this.chooseVictim().getNumber();
                 System.out.print("replacement: ");
-                (physMem.getFrameAt(victimFrameNum).isDirty() ? System.out.print(" needed to write " + victimFrameNum + " to disc: ") : ;);
+                if(physMem.getFrameAt(victimFrameNum).isDirty())
+                {
+                    System.out.print(" needed to write " + victimFrameNum + " to disk: ");
+                }
             }
             
             //the replacement handler is left to the children to implement - they might need to 
