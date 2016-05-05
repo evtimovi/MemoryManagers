@@ -132,14 +132,29 @@ public class Process
      */
     public int whichPage(int address)
     {
-        //convert to bit string
+        //convert to bit string and pad with leading 0s to make it 16 bits long
         String bitAddress = Integer.toBinaryString(address); 
+        bitAddress = padWithZeroes(bitAddress);
+
 
         //get just the front - i.e. the page number
         String pageNumBinary = bitAddress.substring(0, Controller.PAGE_NUMBER_LENGTH);
 
         //parse that to a real integer and return it
         return Integer.parseInt(pageNumBinary, 2);
+    }
+
+    /** helper utility to pad a string with zeroes up to the virtual address size length */
+    public static String padWithZeroes(String ba)
+    {
+       int howMany = Controller.VIRTUAL_ADDRESS_LENGTH - ba.length();
+       String pad = "";
+       for(int i = 0; i < howMany; i++)
+       {
+           pad += "0";
+       }
+
+       return pad.concat(ba);
     }
 
     /** accessors for the PID */
