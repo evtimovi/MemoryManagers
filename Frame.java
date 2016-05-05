@@ -33,12 +33,15 @@ public class Frame
      * exactly what one would expect - keeps track of whether something has been written to this page
      */
     private boolean dirty;
+    private boolean reference;
+
 
     //default constructor with number = -1 and dirty = false
     public Frame()
     {
         this.number = -1;
         this.dirty = false;
+        this.reference = false;
     }
 
     /**
@@ -49,6 +52,7 @@ public class Frame
         this.number = -1;
         this.dirty = false;
         this.pid = owner;
+        this.reference = false;
     }
 
     /**
@@ -68,6 +72,7 @@ public class Frame
     {
         number = -1;
         dirty = false;
+        reference = false;
     }
 
     public void setNumber(int num)
@@ -80,4 +85,7 @@ public class Frame
     public int getPID(){ return pid; }
     public int getOwner(){ return pid; }
     public boolean isDirty(){ return dirty; }
+    public boolean reference() { return reference; }
+    public void clearReference(){ reference = false; }
+    public void setReference(){ reference = true; }
 }

@@ -72,6 +72,8 @@ public abstract class MemoryManager
         
         int victimFrameNum = -1;
 
+        incomingFrame.setReference();
+
         // if it is valid, we are done, no disk access
         if(!incomingFrame.isValid())
         {

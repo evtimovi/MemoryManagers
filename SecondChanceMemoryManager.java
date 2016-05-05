@@ -19,13 +19,44 @@ import java.util.*;
 
 public class SecondChanceMemoryManager extends MemoryManager
 {
+    private LinkedList<Frame> fifo;
+
     public SecondChanceMemoryManager() throws ParametersUninitializedException
     {
         super();
+        fifo = new LinkedList<Frame>();
     }
 
-    protected void replacementHandler(int victimFrameNum, Frame incomingFrame) {}
+    protected void replacementHandler(int victimFrameNum, Frame incomingFrame) 
+    {
+        fifo.add(incomingFrame);
 
-    protected  Frame chooseVictim() {return null;}
+        Frame victim = physMem.getFrameAt(victimFrameNum);
+
+        if(victim != null)
+        {
+            victim.clearAll();
+        }
+
+        incomingFrame.setNumber(victimFrameNum);
+
+        physMem.replaceWith(victimFrameNum, incomingFrame);
+
+
+    }
+
+    protected  Frame chooseVictim() 
+    {
+        Frame candidateVictim = fifo.poll();
+
+        while(candidateVictim.reference())
+        {
+            candidateVictim.clearReference();
+            fifo.add(candidateVictim);
+            candidateVictim = fifo.poll();
+        }
+
+        return candidateVictim;
+    }
 
 }
