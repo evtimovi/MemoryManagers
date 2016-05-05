@@ -79,7 +79,7 @@ public abstract class MemoryManager
 
             int freeFrameNum = physMem.getFreeFrame();
 
-            if(freeFrameNum > 1)
+            if(freeFrameNum > -1)
             {
                 victimFrameNum = freeFrameNum;           
             }

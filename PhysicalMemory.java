@@ -36,6 +36,11 @@ public class PhysicalMemory
         }
 
         pm = new ArrayList<Frame>(Controller.NUM_OF_FRAMES);
+
+        for(int i = 0; i < Controller.NUM_OF_FRAMES; i++)
+        {
+            pm.add(null);
+        }
     }
 
     /**
