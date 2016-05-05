@@ -88,6 +88,7 @@ public abstract class MemoryManager
             {
                 victimFrameNum = this.chooseVictim().getNumber();
                 System.out.print("replacement: ");
+                (physMem.getFrameAt(victimFrameNum).isDirty() ? System.out.print(" needed to write " + victimFrameNum + " to disc: ") : ;);
             }
             
             //the replacement handler is left to the children to implement - they might need to 
