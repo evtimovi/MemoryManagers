@@ -19,6 +19,11 @@ import java.util.*;
 
 public class SecondChanceMemoryManager extends MemoryManager
 {
+    public SecondChanceMemoryManager() throws ParametersUninitializedException
+    {
+        super();
+    }
+
     protected void replacementHandler(int victimFrameNum, Frame incomingFrame) {}
 
     protected  Frame chooseVictim() {return null;}

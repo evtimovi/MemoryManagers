@@ -19,6 +19,10 @@ import java.util.*;
 
 public class OptimalMemoryManager extends MemoryManager
 {
+    public OptimalMemoryManager() throws ParametersUninitializedException
+    {
+    }
+
     protected void replacementHandler(int victimFrameNum, Frame incomingFrame) {}
 
     protected  Frame chooseVictim() {return null;}

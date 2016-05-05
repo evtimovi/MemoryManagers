@@ -20,6 +20,11 @@ import java.util.*;
 public class CustomMemoryManager extends MemoryManager
 {
 
+    public CustomMemoryManager() throws ParametersUninitializedException
+    {
+        super();
+    }
+
     protected void replacementHandler(int victimFrameNum, Frame incomingFrame) {}
 
     protected  Frame chooseVictim() {return null;}

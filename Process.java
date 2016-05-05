@@ -81,13 +81,24 @@ public class Process
      * the EXACT SAME instance that is also stored in the PhysicalMemory object
      * of course, this is a departure from reality, but makes this simulation more efficient 
      * because we don't have to go back to the process to update its page table when we do page replacement
+     *
+     * @return translated address (that is, full physical address)
      */
     public void read(int address)
     {
         int pageNum = whichPage(address);
         Frame fr = pageTable.get(pageNum);
         MemoryManager mm = Controller.getMemoryManager();
-        mm.reference(fr);
+        int replacedFrame = mm.reference(fr);
+     
+        if(replacedFrame < 0) //no page fault
+        {
+            printNoPageFaultMsg(fr.getNumber());
+        }
+        else
+        {
+            printLoadedMsg(pageNum, this.pid, replacedFrame);
+        }
     }
     
 
@@ -102,8 +113,17 @@ public class Process
         int pageNum = whichPage(address);
         Frame fr = pageTable.get(pageNum);
         MemoryManager mm = Controller.getMemoryManager();
-        mm.reference(fr);
+        int replacedFrame = mm.reference(fr);
         fr.setDirtyBit();
+
+        if(replacedFrame < 0) //no page fault
+        {
+            printNoPageFaultMsg(fr.getNumber());
+        }
+        else
+        {
+            printLoadedMsg(pageNum, this.pid, replacedFrame);
+        }
     }
 
     /**
@@ -125,4 +145,28 @@ public class Process
     /** accessors for the PID */
     public int getPid(){return pid;}
     public int getPID(){return pid;}
+
+
+    /** prints the message describing the result of the operation */
+    public void printLoadedMsg(int page, int pid, int frame)
+    {
+        String out = "";
+
+        out += "loaded page #";
+        out += page;
+        out += " of process #";
+        out+= pid;
+        out += " to frame #";
+        out += frame;
+//       out += " with ";
+//       out += (frame ? "" : " no ");
+//       out += "replacement.";
+
+        System.out.println(out);
+    }
+
+    public void printNoPageFaultMsg(int frame)
+    {
+        System.out.println("no page fault. accessed frame #" + frame);
+    }
 }

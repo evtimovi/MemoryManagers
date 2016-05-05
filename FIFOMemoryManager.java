@@ -21,7 +21,7 @@ public class FIFOMemoryManager extends MemoryManager
 {
     private LinkedList<Frame> fifo;
 
-    public FIFOMemoryManager()
+    public FIFOMemoryManager() throws ParametersUninitializedException
     {
         super();
         fifo= new LinkedList<Frame>();

@@ -19,6 +19,10 @@ import java.util.*;
 
 public class LRUMemoryManager extends MemoryManager
 {
+    public LRUMemoryManager() throws ParametersUninitializedException
+    {
+        super();
+    }
     protected void replacementHandler(int victimFrameNum, Frame incomingFrame) {}
 
     protected  Frame chooseVictim() {return null;}

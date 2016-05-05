@@ -121,7 +121,7 @@ public class Controller
      * @param sizeOfPage will correspond to user argument and will be used for the calculations in step 0
      * @param algoChoice the choice of algorithm for the user
      */
-    private static void setup(int sizeOfPage, String algoChoice)
+    private static void setup(int sizeOfPage, String algoChoice) throws ParametersUninitializedException
     {
         PAGE_SIZE = sizeOfPage;
         OFFSET_LENGTH = logBase2(PAGE_SIZE);
@@ -193,7 +193,16 @@ public class Controller
         }
 
         //step 2: setup - initializing page size, etc
-        setup(pageSize, algoType);
+        try
+        {
+            setup(pageSize, algoType);
+        }
+        catch (ParametersUninitializedException e)
+        {
+            System.out.println("The parameters were not initialized properly.");
+            System.exit(1);
+
+        }
 
         //step 3: actual execution loop - parse String and call next
         for (int i = 0; i < future.size(); i++)

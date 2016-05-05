@@ -47,6 +47,7 @@ public abstract class MemoryManager
         pageFaultCount = 0;
     }
 
+
    
     /**
      * method to abstract frame access and reference.
@@ -62,8 +63,10 @@ public abstract class MemoryManager
      *
      * IMPORTANT: the actual frame needs to be passed in by the process - 
      * if this is a new frame, this parameter is going to be what is actually put into the PhysicalMemory table
+     *
+     * @return replaced frame number or -1 if no page fault occurred
      */
-    public void reference(Frame incomingFrame)
+    public int reference(Frame incomingFrame)
     {
         memAccessCount++; //statistics-keeping
         
@@ -88,8 +91,10 @@ public abstract class MemoryManager
             //the replacement handler is left to the children to implement - they might need to 
             //keep special track of who is being accessed, etc
             replacementHandler(victimFrameNum, incomingFrame);
-            
+
         }
+
+        return victimFrameNum; //if a page was loaded, this would be set to something other than -1
     }
 
     /**
